@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tab_bar/two.dart';
+import 'package:tab_bar/one.dart';
 // import 'package:tab_bar/model_two.dart';
 
 class FormTwo extends StatelessWidget {
@@ -13,21 +13,31 @@ class FormTwo extends StatelessWidget {
         appBar: AppBar(
           title: Text('FORM TWO'),
         ),
-        body: SafeArea(child: 
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('id: ${post.id}',),
-            SizedBox(height: 20,),
-            Text('userId: ${post.userId}',),
-            SizedBox(height: 20,),
+        body: SafeArea(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'id: ${post.id}',
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'userId: ${post.userId}',
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Text('Title: ${post.title}'),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Text('Body: ${post.body}'),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
           ],
-        )
-        )
-          );
-          
+        )));
   }
 }

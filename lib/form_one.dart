@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tab_bar/one.dart';
-
+import 'package:tab_bar/two.dart';
 
 class FormOne extends StatelessWidget {
   final Todo todo;
@@ -24,12 +23,13 @@ class FormOne extends StatelessWidget {
               backgroundImage: NetworkImage(todo.avatar),
             ),
             SizedBox(height: 16.0),
-            Text('Name: ${todo.first_name} ${todo.last_name}', style: TextStyle(fontSize: 20)),
+            Text('Name: ${todo.first_name} ${todo.last_name}',
+                style: TextStyle(fontSize: 20)),
             SizedBox(height: 8.0),
             Text('Email: ${todo.email}', style: TextStyle(fontSize: 16)),
           ],
         ),
-    ),
+      ),
     );
   }
 }

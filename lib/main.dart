@@ -4,9 +4,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:tab_bar/three.dart';
-import 'package:tab_bar/two.dart';
+import 'package:tab_bar/one.dart';
 
-import 'one.dart';
+import 'two.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,8 +39,8 @@ class BottomNavi extends StatefulWidget {
 class _BottomNavi extends State<BottomNavi> {
   int currentIndex = 0;
   final List<Widget> body = [
-    Two(),
     One(),
+    Two(),
     There(),
   ];
 

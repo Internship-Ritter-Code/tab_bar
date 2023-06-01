@@ -1,108 +1,85 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tab_bar/form_one.dart';
+import 'package:tab_bar/form_two.dart';
+import 'dart:async';
+import 'dart:convert';
 
-class One extends StatelessWidget {
-  late final Todo todo;
+class One extends StatefulWidget {
+  @override
+  _OneState createState() => _OneState();
+}
 
-  ///**
-  /// Bentuk Json ada 2, one layer dan multiple layer
-  ///
-  /// ========== One  Layer =========
-  /// {
-  ///   "key" : "value",
-  ///   "name" : "dendy"
-  /// }
-  /// ========== One  Layer =========
-  ///
-  ///
-  /// ========== Multiple  Layer =========
-  /// {
-  ///    "name" : "Dendy",
-  ///    "faculity" : "IT Engineer",
-  ///    "book_favorite" : [
-  ///         {
-  ///           "title" : "Manga"
-  ///           "penulis" : "James Bond"
-  ///         },
-  ///          {
-  ///           "title" : "Novel"
-  ///           "penulis" : "Richard Lee"
-  ///         }
-  ///     ]
-  /// }
-  /// ========== Multiple  Layer =========
-  ///
-  /// */
+class _OneState extends State<One> {
+  late List<Post> postList = [];
 
-  final String apiUrl = "https://reqres.in/api/users?per_page=15";
-  Future<List<dynamic>> _fecthDataUsers() async {
-    var result = await http.get(Uri.parse(apiUrl));
-    return json.decode(result.body)['data'];
+  Future<void> getData() async {
+    http.Response response = await http.get(
+      Uri.parse("https://jsonplaceholder.typicode.com/posts"),
+      headers: {"Accept": "application/json"},
+    );
+
+    List<dynamic> dataJSON = json.decode(response.body);
+    List<Post> posts = dataJSON.map((json) => Post.fromJson(json)).toList();
+
+    setState(() {
+      postList = posts;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: FutureBuilder<List<dynamic>>(
-          future: _fecthDataUsers(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  padding: EdgeInsets.all(10),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FormOne(
-                                    todo:
-                                        Todo.fromJson(snapshot.data[index]))));
-                      },
-                      leading: CircleAvatar(
-                        radius: 30,
-                        backgroundImage:
-                            NetworkImage(snapshot.data[index]['avatar']),
+      body: postList.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: postList.length,
+              itemBuilder: (context, index) {
+                final post = postList[index];
+                return Card(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FormTwo(post)));
+                        },
+                        title: Text(post.title),
+                        subtitle: Text(post.body),
                       ),
-                      title: Text(snapshot.data[index]['first_name'] +
-                          " " +
-                          snapshot.data[index]['last_name']),
-                      subtitle: Text(snapshot.data[index]['email']),
-                    );
-                  });
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      ),
+                    ],
+                  ),
+                );
+              },
+            ),
     );
   }
 }
 
-class Todo {
-  final String avatar;
-  final String first_name;
-  final String last_name;
-  final String email;
+class Post {
+  final int userId;
+  final int id;
+  final String title;
+  final String body;
 
-  Todo({
-    required this.avatar,
-    required this.first_name,
-    required this.last_name,
-    required this.email,
-  });
+  Post(
+      {required this.userId,
+      required this.id,
+      required this.title,
+      required this.body});
 
-  factory Todo.fromJson(Map<String, dynamic> json) {
-    return Todo(
-        avatar: json["avatar"],
-        first_name: json["first_name"],
-        last_name: json["last_name"],
-        email: json["email"]);
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+        userId: json["userId"],
+        id: json["id"],
+        title: json["title"],
+        body: json["body"]);
   }
 }
