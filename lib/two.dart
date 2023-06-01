@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tab_bar/form_one.dart';
+import 'package:tab_bar/new_page.dart';
 
 class Two extends StatelessWidget {
   late final Todo todo;
@@ -86,11 +86,46 @@ class Two extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
                           onTap: () {
+                            // Navigator.push()  ===> Fungsinya untuk berpindah dari page 1 ke page selanjutnya secara normal
+                            // Navigator.pop()   ====> Fungsinya untuk berpindah dari page sekarang ke page sebelumnya
+                            // Navigator.pushReplacement() ====>Fungsinya untuk berpindah dari page 1 ke page selanjutnya dengan catatan page pertama dihapus
+
+                            // Navigator.push(
+                            //   context, // Dari mana
+                            //   MaterialPageRoute(
+                            //     builder: (context) => FormOne(
+                            //         todo: Todo.fromJson(
+                            //             users[index])), // Mau Kemana
+                            //   ),
+                            // );
+
+                            /// ========== Pindah dengan data statis =========
+                            // Navigator.push(
+                            //   // Dari context mana =>> Dari Page Sekarang
+                            //   context,
+                            //   // Lewat atau pake kendaraan apa =>> Pake MaterialPageRoute
+                            //   MaterialPageRoute(
+                            //     // Mau kemana ==>> New Page
+                            //     builder: (context) => NewPage(
+                            //       wadahNamaAwal: "Dendy",
+                            //       wadahNamaAkhir: "Turangga",
+                            //     ),
+                            //   ),
+                            // );
+
+                            /// ========== Pindah dengan data dinamis =========
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FormOne(
-                                        todo: Todo.fromJson(users[index]))));
+                              // Dari context mana =>> Dari Page Sekarang
+                              context,
+                              // Lewat atau pake kendaraan apa =>> Pake MaterialPageRoute
+                              MaterialPageRoute(
+                                // Mau kemana ==>> New Page
+                                builder: (context) => NewPage(
+                                  wadahNamaAwal: users[index]['first_name'],
+                                  wadahNamaAkhir: users[index]['last_name'],
+                                ),
+                              ),
+                            );
                           },
                           leading: CircleAvatar(
                             radius: 30,
